@@ -36,7 +36,7 @@ class EC2(object):
         logger.debug("Searching for default VPC")
         for vpc in self.ec2.vpcs.all():
             if vpc.is_default:
-                logger.debug("Default VPC found - Using VPC ID: ", vpc.id)
+                logger.debug("Default VPC found - Using VPC ID: %s", vpc.id)
                 return vpc.id
         raise DaskEc2Exception("There is no default VPC, please pass VPC ID")
 
