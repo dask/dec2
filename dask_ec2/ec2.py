@@ -208,7 +208,7 @@ class EC2(object):
 
     def launch(self, name, image_id, instance_type, count, keyname,
                security_group_name=DEFAULT_SG_GROUP_NAME,
-               security_groups_id=None,
+               security_group_id=None,
                volume_type="gp2",
                volume_size=500,
                keypair=None,
@@ -231,7 +231,10 @@ class EC2(object):
             },
         ]
 
-        security_groups_ids = [security_groups_id] or self.get_security_groups_ids(security_group_name)
+        if security_group_id is not None:
+            security_groups_ids = [security_group_id]
+        else:
+            security_groups_ids = self.get_security_groups_ids(security_group_name)
 
         logger.debug("Creating %i instances on EC2", count)
         if self.subnet_id is not None and self.subnet_id != "":

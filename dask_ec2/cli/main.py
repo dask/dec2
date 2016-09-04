@@ -81,7 +81,7 @@ def cli(ctx):
               required=False,
               help="Security Group Name")
 @click.option("--security-group-id",
-              "security_group_name",
+              "security_group_id",
               default=None,
               show_default=True,
               required=False,
