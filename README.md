@@ -1,4 +1,4 @@
-# Dask EC2
+# Dask EC2 [![Build Status](https://travis-ci.org/dask/dask-ec2.svg?branch=master)](https://travis-ci.org/dask/dask-ec2)
 
 Easily launch a cluster on Amazon EC2 configured with `dask.distributed`,
 Jupyter Notebooks, and Anaconda.
