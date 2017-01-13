@@ -4,7 +4,7 @@ import click
 
 from .main import cli, print_state
 from ..cluster import Cluster
-from ..salt import upload_pillar, upload_formulas
+from ..salt import upload_pillar
 
 @cli.group('notebook', invoke_without_command=True, short_help='Provision the Jupyter notebook')
 @click.pass_context
