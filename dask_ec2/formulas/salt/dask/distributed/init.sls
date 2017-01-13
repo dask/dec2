@@ -23,6 +23,15 @@ dask-install:
     - require:
       - sls: conda
 
+
+# graphviz from conda isn't properly working
+# install from pip
+pip_deps:
+  pip.installed:
+    - name: graphviz
+    - bin_env: {{ install_prefix }}/bin/pip
+
+
 {% if source_install %}
 # install dask (above) to get dependencies then install from git
 source-dask-install:
