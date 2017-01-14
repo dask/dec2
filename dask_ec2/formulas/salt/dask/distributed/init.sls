@@ -1,5 +1,6 @@
 {%- from 'conda/settings.sls' import install_prefix with context -%}
 {%- from 'dask/distributed/settings.sls' import source_install with context -%}
+{%- from 'jupyter/settings.sls' import user with context %}
 
 include:
   - conda
@@ -50,9 +51,17 @@ source-distributed-install:
 
 {% endif %}
 
-
 update-pandas:
   cmd.run:
     - name: {{ install_prefix }}/bin/conda update pandas -y -q
     - require:
       - update-pyopenssl
+
+correct_perms:
+  file.directory:
+    - name: {{ install_prefix }}
+    - user: {{ user }}
+    - group: {{ user }}
+    - recurse:
+      - user
+      - group

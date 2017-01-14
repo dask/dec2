@@ -16,7 +16,7 @@ def test_ssh(cluster):
 @remotetest
 def test_provision_salt(cluster):
     result = invoke("provision")
-    assert result.exit_code == 1
+    assert result.exit_code == 0
 
 @remotetest
 def test_salt_ping(cluster):
