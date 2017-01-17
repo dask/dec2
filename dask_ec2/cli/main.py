@@ -148,7 +148,8 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id, ami, usernam
             click.echo("Not doing anything")
             sys.exit(0)
 
-    driver = EC2(region=region_name, vpc_id=vpc_id, subnet_id=subnet_id)
+    driver = EC2(region=region_name, vpc_id=vpc_id, subnet_id=subnet_id,
+                 default_vpc=not(vpc_id), default_subnet=not(subnet_id))
     click.echo("Launching nodes")
     instances = driver.launch(name=name,
                               image_id=ami,
@@ -195,7 +196,8 @@ def destroy(ctx, filepath, yes, region_name):
 
     question = 'Are you sure you want to destroy the cluster?'
     if yes or click.confirm(question):
-        driver = EC2(region=region_name)
+        driver = EC2(region=region_name, default_vpc=False, default_subnet=False)
+        #needed if there is no default vpc or subnet
         ids = [i.uid for i in cluster.instances]
         click.echo("Terminating instances")
         driver.destroy(ids)

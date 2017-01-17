@@ -237,23 +237,16 @@ class EC2(object):
             security_groups_ids = self.get_security_groups_ids(security_group_name)
 
         logger.debug("Creating %i instances on EC2", count)
+        kwargs = dict(ImageId=image_id,
+                      KeyName=keyname,
+                      MinCount=count,
+                      MaxCount=count,
+                      InstanceType=instance_type,
+                      SecurityGroupIds=self.get_security_groups_ids(security_group_name),
+                      BlockDeviceMappings=device_map)
         if self.subnet_id is not None and self.subnet_id != "":
-            instances = self.ec2.create_instances(ImageId=image_id,
-                                                  KeyName=keyname,
-                                                  MinCount=count,
-                                                  MaxCount=count,
-                                                  InstanceType=instance_type,
-                                                  SecurityGroupIds=security_groups_ids,
-                                                  BlockDeviceMappings=device_map,
-                                                  SubnetId=self.subnet_id)
-        else:
-            instances = self.ec2.create_instances(ImageId=image_id,
-                                                  KeyName=keyname,
-                                                  MinCount=count,
-                                                  MaxCount=count,
-                                                  InstanceType=instance_type,
-                                                  SecurityGroupIds=self.get_security_groups_ids(security_group_name),
-                                                  BlockDeviceMappings=device_map)
+            kwargs['SubnetId'] = self.subnet_id
+        instances = self.ec2.create_instances(**kwargs)
 
         time.sleep(5)
 
