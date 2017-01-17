@@ -1,4 +1,4 @@
-{%- from 'conda/settings.sls' import install_prefix with context -%}
+{%- from 'conda/settings.sls' import install_prefix, py_version with context -%}
 {%- from 'dask/distributed/settings.sls' import source_install with context -%}
 {%- from 'jupyter/settings.sls' import user with context %}
 
@@ -18,12 +18,21 @@ bokeh-install:
     - require:
       - sls: conda
 
+# fastparquet is py-3.X only!
+{%- if py_version == 2 %}
+dask-install:
+  cmd.run:
+    - name: {{ install_prefix }}/bin/conda install dask distributed -y -q -c conda-forge
+    - require:
+      - sls: conda
+{% else %}
 dask-install:
   cmd.run:
     - name: {{ install_prefix }}/bin/conda install dask distributed fastparquet -y -q -c conda-forge
     - require:
       - sls: conda
 
+{% endif %}
 
 # graphviz from conda isn't properly working
 # install from pip
