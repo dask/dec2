@@ -16,9 +16,8 @@ def test_ssh(cluster):
 @remotetest
 def test_provision_salt(cluster):
     result = invoke("provision")
-    print(result)
-    for i in dir(result):
-        print(i, getattr(result, i))
+    if result.exit_code != 0:
+        print(result.output_bytes)
     assert result.exit_code == 0
 
 @remotetest
