@@ -42,8 +42,9 @@ before_install:
   - conda --version
 
   # Install dependencies
-  - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION
-  - source activate test-environment
+  - conda create -n dask-ec2 python=$TRAVIS_PYTHON_VERSION
+  - source activate dask-ec2
+  - conda env update -f ./environment.yml
   - pip install -r requirements.txt
 
   # Mock credentials
