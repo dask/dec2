@@ -5,7 +5,7 @@ dependencies:
   - yaml
   - pyyaml
   - click
-  - boto3
+  - boto3 ==1.4.3
   - pytest
   - coverage
   - pytest-cov
