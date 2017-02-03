@@ -11,5 +11,5 @@ dependencies:
   - pytest-cov
   - pylint
   - pip:
-    - moto
+    - moto==0.4.30
     - twine
