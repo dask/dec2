@@ -1,7 +1,5 @@
 from __future__ import absolute_import, print_function, division
 
-import pytest
-
 from moto import mock_ec2
 
 from dask_ec2 import Instance
@@ -38,7 +36,7 @@ def test_dict_serde():
 @remotetest
 def test_check_ssh(cluster):
     head = cluster.head
-    assert head.check_ssh() == True
+    assert head.check_ssh()
 
 
 @mock_ec2

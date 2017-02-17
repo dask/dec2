@@ -119,7 +119,7 @@ class SSHClient(object):
         try:
             self.sftp.chdir(path)
             return True
-        except IOError as error:
+        except IOError:
             return False
 
     def put(self, local, remote, sudo=False):

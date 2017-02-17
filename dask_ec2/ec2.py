@@ -119,7 +119,7 @@ class EC2(object):
                 else:
                     raise DaskEc2Exception("Security group '%s' not found, please create or use the default '%s'" %
                                            (security_group, DEFAULT_SG_GROUP_NAME))
-        except ClientError as e:
+        except ClientError:
             raise DaskEc2Exception("Security group '%s' not found, please create or use the default '%s'" %
                                    (security_group, DEFAULT_SG_GROUP_NAME))
 

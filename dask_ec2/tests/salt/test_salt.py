@@ -1,7 +1,5 @@
 from __future__ import absolute_import, print_function, division
 
-import pytest
-
 from ..utils import remotetest, cluster, invoke
 
 
@@ -19,6 +17,7 @@ def test_provision_salt(cluster):
     if result.exit_code != 0:
         print(result.output_bytes)
     assert result.exit_code == 0
+
 
 @remotetest
 def test_salt_ping(cluster):

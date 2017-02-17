@@ -2,7 +2,6 @@ from __future__ import print_function, division, absolute_import
 
 import logging
 
-import six
 import yaml
 from . import libpepper
 
@@ -52,7 +51,7 @@ class Cluster(object):
             try:
                 self._pepper = libpepper.Pepper(url, ignore_ssl_errors=True)
                 self._pepper.login('saltdev', 'saltdev', 'pam')
-            except URLError as e:
+            except URLError:
                 raise DaskEc2Exception(
                     "Could not connect to salt server. Try `dask-ec2 provision` and try again")
         return self._pepper
@@ -63,7 +62,7 @@ class Cluster(object):
         args = [] or args
         try:
             return self.pepper.local(target, module, args)
-        except URLError as e:
+        except URLError:
             raise DaskEc2Exception(
                 "Could not connect to salt server. Try `dask-ec2 provision` and try again")
 

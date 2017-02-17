@@ -14,6 +14,7 @@ class Table():
             if not ok:
                 self.tabletype = 0
             #self.tabletype = tabletypes.index(tabletype)
+
     def formatRowBorder(self, colLengths):
         s = "+"
         # TODO: Simplify?

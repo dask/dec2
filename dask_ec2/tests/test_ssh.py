@@ -110,11 +110,11 @@ def test_mkdir(cluster, request):
     dir2 = posixpath.join(dir1, "dir2")
     dir3 = posixpath.join(dir2, "dir3")
     client.mkdir(dir3)
-    assert client.dir_exists(dir1) == True
-    assert client.dir_exists(dir2) == True
-    assert client.dir_exists(dir3) == True
+    assert client.dir_exists(dir1)
+    assert client.dir_exists(dir2)
+    assert client.dir_exists(dir3)
 
-    assert client.dir_exists("test -d /FAKEFAKE") == False
+    assert not client.dir_exists("test -d /FAKEFAKE")
     assert client.exec_command("test -d /FAKEFAKE")["exit_code"] == 1
     assert client.exec_command("test -d {}".format(dir1))["exit_code"] == 0
     assert client.exec_command("test -d {}".format(dir2))["exit_code"] == 0
@@ -169,9 +169,9 @@ def test_put_dir(cluster, tmpdir, request):
     local = d1.strpath
     remote = "/tmp/{}".format(testname)
     client.put(local, remote, sudo=True)
-    assert client.dir_exists(posixpath.join(remote)) == True
-    assert client.dir_exists(posixpath.join(remote, "subdir")) == True
-    assert client.dir_exists(posixpath.join(remote, "subdir", "subsubdir")) == True
+    assert client.dir_exists(posixpath.join(remote))
+    assert client.dir_exists(posixpath.join(remote, "subdir"))
+    assert client.dir_exists(posixpath.join(remote, "subdir", "subsubdir"))
     assert client.exec_command("test -e {}".format(posixpath.join(remote)))["exit_code"] == 0
     assert client.exec_command("cat {}".format(posixpath.join(remote, "upload1.txt")))["stdout"] == "content1"
     assert client.exec_command("cat {}".format(posixpath.join(remote, "subdir", "upload2.txt")))["stdout"] == "content2"

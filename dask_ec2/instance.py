@@ -1,10 +1,8 @@
 from __future__ import print_function, division, absolute_import
 
-import os
 import socket
 import logging
 
-import paramiko
 from paramiko.ssh_exception import BadHostKeyException, AuthenticationException, SSHException
 
 from .ssh import SSHClient

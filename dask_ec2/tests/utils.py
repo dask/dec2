@@ -3,7 +3,6 @@ from __future__ import absolute_import, print_function, division
 import os
 import sys
 import pytest
-import boto3
 
 from click.testing import CliRunner
 

@@ -295,7 +295,7 @@ def async_cmd(results, instance, command):
 
     try:
         results[instance.ip] = __remote_cmd()
-    except RetriesExceededException as e:
+    except RetriesExceededException:
         results[instance.ip] = False
 
 
@@ -309,7 +309,7 @@ def async_upload(results, instance, local, remote):
 
     try:
         results[instance.ip] = __remote_upload()
-    except RetriesExceededException as e:
+    except RetriesExceededException:
         results[instance.ip] = False
 
 
@@ -331,7 +331,7 @@ def install_salt_minion(cluster):
     for t in threads:
         t.join()
 
-    all_ok = all([r == False for r in results])
+    all_ok = all([r is False for r in results])
     if not all_ok:
         failed_nodes = []
         for minion_ip, minion_data in results.items():

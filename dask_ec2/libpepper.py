@@ -4,10 +4,8 @@ A Python library for working with Salt's REST API
 (Specifically the rest_cherrypy netapi module.)
 
 '''
-import functools
 import json
 import logging
-import os
 import ssl
 try:
     ssl._create_default_https_context = ssl._create_stdlib_context
@@ -75,7 +73,7 @@ class Pepper(object):
 
         '''
         split = urlparse.urlsplit(api_url)
-        if not split.scheme in ['http', 'https']:
+        if split.scheme not in ['http', 'https']:
             raise PepperException("salt-api URL missing HTTP(s) protocol: {0}".format(self.api_url))
 
         self.api_url = api_url
@@ -177,7 +175,7 @@ class Pepper(object):
         self._ssl_verify = self.ignore_ssl_errors
         params = {'url': self._construct_url(path),
                   'headers': headers,
-                  'verify': self._ssl_verify == True,
+                  'verify': self._ssl_verify,
                   'auth': auth,
                   'data': json.dumps(data),}
         logger.debug('postdata {0}'.format(params))

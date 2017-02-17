@@ -2,9 +2,10 @@ from __future__ import absolute_import, print_function, division
 
 import pytest
 
-requests = pytest.importorskip("distributed")
+from ..utils import remotetest, cluster, invoke, assert_all_true
 
-from utils import remotetest, cluster, invoke, assert_all_true
+
+requests = pytest.importorskip("distributed")
 
 
 # def setup_module(module):

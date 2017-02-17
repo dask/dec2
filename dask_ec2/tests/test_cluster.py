@@ -64,7 +64,7 @@ def test_set_keypair():
 def test_dict_serde():
     cluster = Cluster()
     username = "user"
-    keypair="~/.ssh/key"
+    keypair = "~/.ssh/key"
     n = 5
     for i in range(n):
         instance = Instance(uid="%i" % i, ip="{0}.{0}.{0}.{0}".format(i), username=username, keypair=keypair)
@@ -89,7 +89,7 @@ def test_from_filepath(request, tmpdir):
 
     cluster = Cluster()
     username = "user"
-    keypair="~/.ssh/key"
+    keypair = "~/.ssh/key"
     n = 5
     for i in range(n):
         instance = Instance(uid="%i" % i, ip="{0}.{0}.{0}.{0}".format(i), username=username, keypair=keypair)

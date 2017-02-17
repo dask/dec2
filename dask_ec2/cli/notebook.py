@@ -6,6 +6,7 @@ from .main import cli, print_state
 from ..cluster import Cluster
 from ..salt import upload_pillar
 
+
 @cli.group('notebook', invoke_without_command=True, short_help='Provision the Jupyter notebook')
 @click.pass_context
 @click.option("--file",
@@ -57,7 +58,6 @@ def notebook_install(ctx, filepath, password):
     click.echo("Jupyter notebook available at http://%s:8888/ \nLogin with "
                "password: %s" %
                (cluster.head.ip, password))
-
 
 
 @notebook.command("open", short_help="Open a web browser pointing to the Notebook UI")
