@@ -168,8 +168,7 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
     cluster = Cluster.from_boto3_instances(region_name, instances)
     cluster.set_username(username)
     cluster.set_keypair(keypair)
-    with open(filepath, "w") as f:
-        yaml.safe_dump(cluster.to_dict(), f, default_flow_style=False)
+    cluster.to_file(filepath)
 
     if _provision:
         ctx.invoke(provision, filepath=filepath, anaconda_=anaconda_, dask=dask,
