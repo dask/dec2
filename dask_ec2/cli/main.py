@@ -165,7 +165,7 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
                               volume_size=volume_size,
                               keypair=keypair)
 
-    cluster = Cluster.from_boto3_instances(instances)
+    cluster = Cluster.from_boto3_instances(region_name, instances)
     cluster.set_username(username)
     cluster.set_keypair(keypair)
     with open(filepath, "w") as f:
