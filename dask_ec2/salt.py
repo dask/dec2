@@ -1,6 +1,7 @@
 """
 Utilies to manage salt bootstrap and other stuff
 """
+import copy
 import os
 import logging
 import itertools
@@ -87,14 +88,14 @@ class Response(dict):
 
     def group_by_id(self, ignore_fields=None, sort=True):
         if ignore_fields:
-            copy = copy_(self)
-            for id_ in copy:
+            clone = copy.deepcopy(self)
+            for id_ in clone:
                 for field in ignore_fields:
-                    del copy[id_][field]
+                    del clone[id_][field]
         else:
-            copy = self
+            clone = self
 
-        items = sorted(copy.items(), key=lambda x: x[1])
+        items = sorted(clone.items(), key=lambda x: x[1])
         groups = []
         for key, group in itertools.groupby(items, key=lambda x: x[1]):
             groups.append((key, [item[0] for item in group]))
