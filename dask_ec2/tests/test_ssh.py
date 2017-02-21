@@ -25,13 +25,12 @@ def test_ssh_ok_pkey_obj(cluster):
 def test_wrong_pkey_type(cluster):
     instance = cluster.head
     pkey = {"wrong": "obj"}
-    with pytest.raises(DaskEc2Exception) as excinfo:
+    with pytest.raises(DaskEc2Exception):
         SSHClient(host=instance.ip,
                   username=instance.username,
                   port=instance.port,
                   password=None,
                   pkey=pkey)
-    assert "Authentication Error" in str(excinfo.value)
 
 
 @remotetest
