@@ -367,6 +367,7 @@ def provision(ctx, filepath, ssh_check, master, minions, upload, anaconda_,
         ctx.invoke(dask_install, filepath=filepath, nprocs=nprocs,
                    source=source)
     if notebook:
+        from .notebook import notebook_install
         ctx.invoke(notebook_install, filepath=filepath)
 
 
@@ -406,5 +407,5 @@ def print_state(output):
     return response
 
 
-from .daskd import *
-from .notebook import *
+from .daskd import *  # noqa
+from .notebook import *  # noqa
