@@ -165,7 +165,6 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
        security_group_name, security_group_id, volume_type, volume_size,
        filepath, _provision, anaconda_, dask, notebook, nprocs, source):
     import os
-    import yaml
     from ..ec2 import EC2
 
     if os.path.exists(filepath):
@@ -226,7 +225,7 @@ def destroy(ctx, filepath, yes):
 
     question = 'Are you sure you want to destroy the cluster?'
     if yes or click.confirm(question):
-        driver = EC2(region=region_name,
+        driver = EC2(region=cluster.region_name,
                      default_vpc=False,
                      default_subnet=False)
         # needed if there is no default vpc or subnet
