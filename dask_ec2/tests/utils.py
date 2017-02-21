@@ -19,7 +19,7 @@ def invoke(*args):
     args = list(args)
     args.extend(['--file', clusterfile])
     runner = CliRunner()
-    return runner.invoke(cli, args, catch_exceptions=False, input=sys.stdin)
+    return runner.invoke(cli, args, catch_exceptions=False, input=os.devnull)
 
 
 def assert_all_true(salt_output, none_is_ok=False):
