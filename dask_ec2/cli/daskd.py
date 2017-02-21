@@ -65,7 +65,8 @@ def dask_install(ctx, filepath, shell, nprocs, source):
             "dask-worker": {
                 "nprocs": nprocs
             }
-    }})
+        }
+    })
 
     click.echo("Installing scheduler")
     cluster.pepper.local("node-0", "grains.append", ["roles", "dask.distributed.scheduler"])
@@ -147,13 +148,13 @@ dask-ec2 destroy""".format(address).lstrip())
               help="Filepath to the instances metadata")
 def dask_shell(ctx, filepath):
     try:
-        import distributed
+        import distributed  # noqa
     except:
         click.echo("ERROR: `distributed` package not found, not starting the python shell",
                    err=True)
         sys.exit(1)
     try:
-        import IPython
+        import IPython  # noqa
         shell = "ipython"
     except:
         shell = "python"
