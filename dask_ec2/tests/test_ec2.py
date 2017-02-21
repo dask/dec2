@@ -20,6 +20,22 @@ security_group = "another-sg"
 
 
 @mock_ec2
+def test_get_default_vpc(driver):
+    with pytest.raises(DaskEc2Exception) as e:
+        driver.get_default_vpc()
+
+    assert "There is no default VPC, please pass VPC ID" == str(e.value)
+
+
+@mock_ec2
+def test_get_default_subnet(driver):
+    with pytest.raises(DaskEc2Exception) as e:
+        driver.get_default_subnet()
+
+    assert "There is no VPC, please pass VPC ID or assign a default VPC" == str(e.value)
+
+
+@mock_ec2
 def test_launch_no_keyname(driver):
     with pytest.raises(DaskEc2Exception) as e:
         driver.launch(name=name,

@@ -63,6 +63,8 @@ class EC2(object):
                         if subnet.availability_zone == availability_zone and subnet.default_for_az:
                             logger.debug("Default subnet found - Using Subnet ID: %s", subnet.id)
                             return subnet.id
+        if not self.vpc_id:
+            raise DaskEc2Exception("There is no VPC, please pass VPC ID or assign a default VPC")
         raise DaskEc2Exception("There is no default subnet on VPC %s, please pass a subnet ID" % self.vpc_id)
 
     def check_keyname(self, keyname):
