@@ -189,11 +189,10 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
                               volume_size=volume_size,
                               keypair=keypair)
 
-    cluster = Cluster.from_boto3_instances(instances)
+    cluster = Cluster.from_boto3_instances(region_name, instances)
     cluster.set_username(username)
     cluster.set_keypair(keypair)
-    with open(filepath, "w") as f:
-        yaml.safe_dump(cluster.to_dict(), f, default_flow_style=False)
+    cluster.to_file(filepath)
 
     if _provision:
         ctx.invoke(provision, filepath=filepath, anaconda_=anaconda_,
@@ -220,7 +219,7 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
               show_default=True,
               required=False,
               help="AWS region")
-def destroy(ctx, filepath, yes, region_name):
+def destroy(ctx, filepath, yes):
     import os
     from ..ec2 import EC2
     cluster = Cluster.from_filepath(filepath)
