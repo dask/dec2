@@ -58,13 +58,14 @@ def dask(ctx, filepath, nprocs, source):
 def dask_install(ctx, filepath, shell, nprocs, source):
     cluster = Cluster.from_filepath(filepath)
     scheduler_public_ip = cluster.instances[0].ip
-    upload_pillar(cluster, "dask.sls", {"dask": {
-                                            "scheduler_public_ip": scheduler_public_ip,
-                                            "source_install": source,
-                                            "dask-worker": {
-                                                "nprocs": nprocs
-                                            }
-                                        }})
+    upload_pillar(cluster, "dask.sls", {
+        "dask": {
+            "scheduler_public_ip": scheduler_public_ip,
+            "source_install": source,
+            "dask-worker": {
+                "nprocs": nprocs
+            }
+    }})
 
     click.echo("Installing scheduler")
     cluster.pepper.local("node-0", "grains.append", ["roles", "dask.distributed.scheduler"])
@@ -135,8 +136,7 @@ dask-ec2 destroy""".format(address).lstrip())
 
 @dask.command(
     "shell",
-    short_help=
-    "Open a python (ipython if available) shell connected to the dask.distributed cluster")
+    short_help="Open a python (ipython if available) shell connected to the dask.distributed cluster")
 @click.pass_context
 @click.option("--file",
               "filepath",
@@ -171,8 +171,7 @@ def dask_shell(ctx, filepath):
 
 @dask.command(
     "ui",
-    short_help=
-    "Open a web browser pointing to the Dask UI")
+    short_help="Open a web browser pointing to the Dask UI")
 @click.pass_context
 @click.option("--file",
               "filepath",

@@ -143,9 +143,9 @@ class SSHClient(object):
 
         if sudo:
             cmd = 'cp -rf {} {}'.format(remote, real_remote)
-            output = self.exec_command(cmd, sudo=True)
+            self.exec_command(cmd, sudo=True)
             cmd = 'rm -rf {}'.format(remote)
-            output = self.exec_command(cmd, sudo=True)
+            self.exec_command(cmd, sudo=True)
 
     def put_dir(self, local, remote, sudo=False):
         logger.debug("Uploading directory %s to %s", local, remote)
@@ -166,6 +166,6 @@ class SSHClient(object):
 
         if sudo:
             cmd = 'cp -rf {}/* {}'.format(remote, real_remote)
-            output = self.exec_command(cmd, sudo=True)
+            self.exec_command(cmd, sudo=True)
             cmd = 'rm -rf {}'.format(remote)
-            output = self.exec_command(cmd, sudo=True)
+            self.exec_command(cmd, sudo=True)

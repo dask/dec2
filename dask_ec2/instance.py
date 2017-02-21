@@ -26,7 +26,8 @@ class Instance(object):
         self = cls(ip=instance.public_ip_address, uid=instance.id)
         return self
 
-    @retry(catch=(BadHostKeyException, AuthenticationException, SSHException, socket.error, TypeError, DaskEc2Exception))
+    @retry(catch=(BadHostKeyException, AuthenticationException, SSHException,
+                  socket.error, TypeError, DaskEc2Exception))
     def check_ssh(self):
         logger.debug('Checking ssh connection for %s', self.ip)
         self.ssh_client.exec_command("ls")

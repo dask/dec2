@@ -1,6 +1,6 @@
 from __future__ import absolute_import, print_function, division
 
-from ..utils import remotetest, cluster, invoke
+from ..utils import remotetest, invoke
 
 
 @remotetest

@@ -41,11 +41,11 @@ def notebook_install(ctx, filepath, password):
     click.echo("Installing Jupyter notebook on the head node")
     cluster = Cluster.from_filepath(filepath)
 
-    upload_pillar(cluster, "jupyter.sls",
-                  {"jupyter": {
-                      "password": password
-                    }
-                  })
+    upload_pillar(cluster, "jupyter.sls", {
+        "jupyter": {
+            "password": password
+        }
+    })
 
     # only install on head node
     output = cluster.salt_call("node-0", "state.sls", ["jupyter.notebook"])

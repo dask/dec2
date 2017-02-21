@@ -126,8 +126,8 @@ class Pepper(object):
         try:
             if not (self._ssl_verify):
                 con = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-                #con.check_hostname = False
-                #con.verify_mode = ssl.CERT_NONE
+                # con.check_hostname = False
+                # con.verify_mode = ssl.CERT_NONE
                 f = urlopen(req, context=con)
             else:
                 f = urlopen(req)
@@ -177,7 +177,7 @@ class Pepper(object):
                   'headers': headers,
                   'verify': self._ssl_verify,
                   'auth': auth,
-                  'data': json.dumps(data),}
+                  'data': json.dumps(data)}
         logger.debug('postdata {0}'.format(params))
         resp = requests.post(**params)
         if resp.status_code == 401:
@@ -204,7 +204,7 @@ class Pepper(object):
 
         Wraps :meth:`low`.
         '''
-        low = {'client': 'local', 'tgt': tgt, 'fun': fun,}
+        low = {'client': 'local', 'tgt': tgt, 'fun': fun}
 
         if arg:
             low['arg'] = arg
@@ -229,7 +229,7 @@ class Pepper(object):
 
         Wraps :meth:`low`.
         '''
-        low = {'client': 'local_async', 'tgt': tgt, 'fun': fun,}
+        low = {'client': 'local_async', 'tgt': tgt, 'fun': fun}
 
         if arg:
             low['arg'] = arg
@@ -264,7 +264,7 @@ class Pepper(object):
         Usage::
           runner('jobs.lookup_jid', jid=12345)
         '''
-        low = {'client': 'runner', 'fun': fun,}
+        low = {'client': 'runner', 'fun': fun}
 
         low.update(kwargs)
 

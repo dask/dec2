@@ -2,7 +2,7 @@ from __future__ import absolute_import, print_function, division
 
 import pytest
 
-from ..utils import remotetest, cluster, invoke, assert_all_true
+from ..utils import remotetest, assert_all_true
 
 
 requests = pytest.importorskip("distributed")
@@ -14,5 +14,6 @@ requests = pytest.importorskip("distributed")
 
 @remotetest
 def test_dask(cluster):
-    response = cluster.salt_call("*", "state.sls", ["dask.distributed"])["return"][0]
+    output = cluster.salt_call("*", "state.sls", ["dask.distributed"])
+    response = output["return"][0]
     assert_all_true(response)

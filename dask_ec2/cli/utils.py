@@ -13,7 +13,7 @@ class Table():
                     ok = True
             if not ok:
                 self.tabletype = 0
-            #self.tabletype = tabletypes.index(tabletype)
+            # self.tabletype = tabletypes.index(tabletype)
 
     def formatRowBorder(self, colLengths):
         s = "+"
@@ -28,7 +28,8 @@ class Table():
         colsInRow = len(row)
         for n in range(columns):
             if n <= (colsInRow - 1):
-                s += "| " + row[n] + (" " * ((colLengths[n] - len(row[n])) + 1))
+                s += "| " + row[n]
+                s += (" " * ((colLengths[n] - len(row[n])) + 1))
             else:    # index out of bounds
                 s += "|" + (" " * (colLengths[n] + 2))
         s += "|"
@@ -46,14 +47,14 @@ class Table():
         for i, r in enumerate(data):
             for j, c in enumerate(r):
                 data[i][j] = str(c)
-        #DEBUG: print data
+        # DEBUG: print data
         # Find max length in each column
         maxColLengths = [0] * columns
         for i, r in enumerate(data):
             for j, c in enumerate(r):
                 if (len(str(c)) > maxColLengths[j]):
                     maxColLengths[j] = len(str(c))
-        #DEBUG: print maxColLengths
+        # DEBUG: print maxColLengths
         # Print rable
         if self.tabletype == 0:
             border = self.formatRowBorder(maxColLengths)

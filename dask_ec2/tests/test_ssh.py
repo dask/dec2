@@ -4,7 +4,7 @@ import pytest
 
 from dask_ec2.ssh import SSHClient
 from dask_ec2.exceptions import DaskEc2Exception
-from .utils import remotetest, cluster
+from .utils import remotetest
 
 
 @remotetest
@@ -12,8 +12,13 @@ def test_ssh_ok_pkey_obj(cluster):
     import os
     import paramiko
     instance = cluster.head
-    pkey = paramiko.RSAKey.from_private_key_file(os.path.expanduser(instance.keypair))
-    client = SSHClient(host=instance.ip, username=instance.username, port=instance.port, password=None, pkey=pkey)
+    keypath = os.path.expanduser(instance.keypair)
+    pkey = paramiko.RSAKey.from_private_key_file(keypath)
+    SSHClient(host=instance.ip,
+              username=instance.username,
+              port=instance.port,
+              password=None,
+              pkey=pkey)
 
 
 @remotetest
@@ -21,24 +26,39 @@ def test_wrong_pkey_type(cluster):
     instance = cluster.head
     pkey = {"wrong": "obj"}
     with pytest.raises(DaskEc2Exception) as excinfo:
-        client = SSHClient(host=instance.ip, username=instance.username, port=instance.port, password=None, pkey=pkey)
+        SSHClient(host=instance.ip,
+                  username=instance.username,
+                  port=instance.port,
+                  password=None,
+                  pkey=pkey)
+    assert "Authentication Error" in str(excinfo.value)
 
 
 @remotetest
 def test_ssh_ok_password(cluster):
+    # NOTE: password is a little bit hardcoded to docker setup
     instance = cluster.head
-    password = "root"    # NOTE: this is a little bit hardcoded to docker setup
-    client = SSHClient(host=instance.ip, username=instance.username, port=instance.port, password=password, pkey=None)
-    reponse = client.exec_command("ls")
+    password = "root"
+    client = SSHClient(host=instance.ip,
+                       username=instance.username,
+                       port=instance.port,
+                       password=password,
+                       pkey=None)
+    client.exec_command("ls")
     client.close()
 
 
 @remotetest
 def test_ssh_fail_password(cluster):
+    # NOTE: password is a little bit hardcoded to docker setup
     instance = cluster.head
-    password = "root_not"    # NOTE: this is a little bit hardcoded to docker setup
+    password = "root_not"
     with pytest.raises(DaskEc2Exception) as excinfo:
-        client = SSHClient(host=instance.ip, username=instance.username, port=instance.port, password=password, pkey=None)
+        SSHClient(host=instance.ip,
+                  username=instance.username,
+                  port=instance.port,
+                  password=password,
+                  pkey=None)
     assert "Authentication Error" in str(excinfo.value)
 
 
@@ -94,7 +114,8 @@ def test_exec_command_sudo(cluster, request):
     assert response["exit_code"] == 0
 
     def fin():
-        response = client.exec_command("rm -rf /{}".format(testname), sudo=True)
+        response = client.exec_command("rm -rf /{}".format(testname),
+                                       sudo=True)
         assert response["exit_code"] == 0
         client.close()
     request.addfinalizer(fin)
@@ -126,7 +147,8 @@ def test_mkdir(cluster, request):
     client.mkdir(dir3)
 
     def fin():
-        response = client.exec_command("rm -rf /tmp/{}".format(testname), sudo=True)
+        response = client.exec_command("rm -rf /tmp/{}".format(testname),
+                                       sudo=True)
         assert response["exit_code"] == 0
         client.close()
     request.addfinalizer(fin)
@@ -169,16 +191,26 @@ def test_put_dir(cluster, tmpdir, request):
     local = d1.strpath
     remote = "/tmp/{}".format(testname)
     client.put(local, remote, sudo=True)
+
     assert client.dir_exists(posixpath.join(remote))
     assert client.dir_exists(posixpath.join(remote, "subdir"))
     assert client.dir_exists(posixpath.join(remote, "subdir", "subsubdir"))
-    assert client.exec_command("test -e {}".format(posixpath.join(remote)))["exit_code"] == 0
-    assert client.exec_command("cat {}".format(posixpath.join(remote, "upload1.txt")))["stdout"] == "content1"
-    assert client.exec_command("cat {}".format(posixpath.join(remote, "subdir", "upload2.txt")))["stdout"] == "content2"
-    assert client.exec_command("cat {}".format(posixpath.join(remote, "subdir", "subsubdir", "upload3.txt")))["stdout"] == "content3"
+
+    path = posixpath.join(remote)
+    assert client.exec_command("test -e {}".format(path))["exit_code"] == 0
+
+    path = posixpath.join(remote, "upload1.txt")
+    assert client.exec_command("cat {}".format(path))["stdout"] == "content1"
+
+    path = posixpath.join(remote, "subdir", "upload2.txt")
+    assert client.exec_command("cat {}".format(path))["stdout"] == "content2"
+
+    path = posixpath.join(remote, "subdir", "subsubdir", "upload3.txt")
+    assert client.exec_command("cat {}".format(path))["stdout"] == "content3"
 
     def fin():
-        response = client.exec_command("rm -rf /tmp/{}".format(testname), sudo=True)
+        response = client.exec_command("rm -rf /tmp/{}".format(testname),
+                                       sudo=True)
         assert response["exit_code"] == 0
         client.close()
     request.addfinalizer(fin)

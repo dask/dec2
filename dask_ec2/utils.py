@@ -11,11 +11,10 @@ def retry(retries=10, wait=5, catch=None):
     Decorator to retry on exceptions raised
     """
     catch = catch or (Exception,)
-    last_exception = None
 
     def real_retry(function):
-
         def wrapper(*args, **kwargs):
+            last_exception = None
             for attempt in range(1, retries + 1):
                 try:
                     ret = function(*args, **kwargs)

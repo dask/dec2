@@ -5,9 +5,10 @@ import logging
 import yaml
 from . import libpepper
 
-from .compatibility import URLError
 from .exceptions import DaskEc2Exception
 from .instance import Instance
+
+from six.moves.urllib.error import URLError
 
 logger = logging.getLogger(__name__)
 
