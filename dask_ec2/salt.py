@@ -134,8 +134,7 @@ def install_salt_master(cluster):
     try:
         __install_salt_api()
     except RetriesExceededException as e:
-        raise DaskEc2Exception("%s\nCouldn't bootstrap salt-api. Error is above (maybe try again)" %
-                               e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't bootstrap salt-api. Error is above (maybe try again)" % e.last_exception)
 
     @retry(retries=3, wait=0)
     def __setup_salt_master():
@@ -146,9 +145,8 @@ def install_salt_master(cluster):
     try:
         __setup_salt_master()
     except RetriesExceededException as e:
-        raise DaskEc2Exception(
-            "%s\nCouldn't setup salt-master settings. Error is above (maybe try again)" %
-            e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't setup salt-master settings. Error is above (maybe try again)" %
+                               e.last_exception)
 
     @retry(retries=3, wait=0)
     def __apt_installs():
@@ -173,9 +171,7 @@ def install_salt_master(cluster):
     try:
         __upgrade_pip()
     except RetriesExceededException as e:
-        raise DaskEc2Exception(
-            "%s\nCouldn't upgrade pip. Error is above (maybe try again)" %
-            e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't upgrade pip. Error is above (maybe try again)" % e.last_exception)
 
     @retry(retries=3, wait=0)
     def __install_salt_rest_api():
@@ -187,8 +183,7 @@ def install_salt_master(cluster):
     try:
         __install_salt_rest_api()
     except RetriesExceededException as e:
-        raise DaskEc2Exception("%s\nCouldn't install CherryPy. Error is above (maybe try again)" %
-                               e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't install CherryPy. Error is above (maybe try again)" % e.last_exception)
 
     @retry(retries=3, wait=0)
     def __install_pyopensll():
@@ -200,8 +195,7 @@ def install_salt_master(cluster):
     try:
         __install_pyopensll()
     except RetriesExceededException as e:
-        raise DaskEc2Exception("%s\nCouldn't install PyOpenSSL. Error is above (maybe try again)" %
-                               e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't install PyOpenSSL. Error is above (maybe try again)" % e.last_exception)
 
     @retry(retries=3, wait=0)
     def __create_ssl_cert():
@@ -213,9 +207,8 @@ def install_salt_master(cluster):
     try:
         __create_ssl_cert()
     except RetriesExceededException as e:
-        raise DaskEc2Exception(
-            "%s\nCouldn't generate SSL certificate. Error is above (maybe try again)" %
-            e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't generate SSL certificate. Error is above (maybe try again)" %
+                               e.last_exception)
 
     @retry(retries=3, wait=0)
     def __setup_rest_cherrypy():
@@ -238,9 +231,8 @@ def install_salt_master(cluster):
     try:
         __setup_salt_external_auth()
     except RetriesExceededException as e:
-        raise DaskEc2Exception(
-            "%s\nCouldn't setup salt external auth system. Error is above (maybe try again)" %
-            e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't setup salt external auth system. Error is above (maybe try again)" %
+                               e.last_exception)
 
     @retry(retries=3, wait=0)
     def __create_saltdev_user():
@@ -265,9 +257,8 @@ def install_salt_master(cluster):
     try:
         __restart_salt_master()
     except RetriesExceededException as e:
-        raise DaskEc2Exception(
-            "%s\nCouldn't restart salt-master service. Error is above (maybe try again)" %
-            e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't restart salt-master service. Error is above (maybe try again)" %
+                               e.last_exception)
 
     @retry(retries=3, wait=0)
     def __restart_salt_api():
@@ -279,9 +270,8 @@ def install_salt_master(cluster):
     try:
         __restart_salt_api()
     except RetriesExceededException as e:
-        raise DaskEc2Exception(
-            "%s\nCouldn't restart salt-api service. Error is above (maybe try again)" %
-            e.last_exception)
+        raise DaskEc2Exception("%s\nCouldn't restart salt-api service. Error is above (maybe try again)" %
+                               e.last_exception)
 
 
 def async_cmd(results, instance, command):
@@ -324,8 +314,7 @@ def install_salt_minion(cluster):
     for i, instance in enumerate(cluster.instances):
         minion_id = "node-{}".format(i)
         cmd = "curl -L https://bootstrap.saltstack.com | sh -s -- "
-        cmd += "-d -X -P -L -A {master_ip} -i {minion_id} stable".format(master_ip=master_ip,
-                                                                         minion_id=minion_id)
+        cmd += "-d -X -P -L -A {master_ip} -i {minion_id} stable".format(master_ip=master_ip, minion_id=minion_id)
         t = threading.Thread(target=async_cmd, args=(results, instance, cmd))
         t.start()
         threads.append(t)
@@ -339,8 +328,7 @@ def install_salt_minion(cluster):
             if minion_data is False:
                 failed_nodes.append(minion_ip)
         if failed_nodes:
-            raise DaskEc2Exception("Error bootstraping salt-minion at nodes: %s (maybe try again)" %
-                                   failed_nodes)
+            raise DaskEc2Exception("Error bootstraping salt-minion at nodes: %s (maybe try again)" % failed_nodes)
 
     logger.debug("Configuring salt-mine on the salt minions")
     results, threads = {}, []
@@ -360,9 +348,8 @@ def install_salt_minion(cluster):
             if minion_data is False:
                 failed_nodes.append(minion_ip)
         if failed_nodes:
-            raise DaskEc2Exception(
-                "Error configuring the salt-mine in the salt-minion at nodes: %s (maybe try again)"
-                % failed_nodes)
+            raise DaskEc2Exception("Error configuring the salt-mine in the salt-minion at nodes: %s (maybe try again)" %
+                                   failed_nodes)
 
     logger.debug("Restarting the salt-minion service")
     results, threads = {}, []
@@ -381,8 +368,7 @@ def install_salt_minion(cluster):
             if minion_data is False:
                 failed_nodes.append(minion_ip)
         if failed_nodes:
-            raise DaskEc2Exception("Error restarting the salt-minion at nodes: %s (maybe try again)" %
-                                   failed_nodes)
+            raise DaskEc2Exception("Error restarting the salt-minion at nodes: %s (maybe try again)" % failed_nodes)
 
 
 def upload_formulas(cluster):

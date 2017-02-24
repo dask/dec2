@@ -4,9 +4,7 @@ import pytest
 
 from ..utils import remotetest, assert_all_true
 
-
 requests = pytest.importorskip("distributed")
-
 
 # def setup_module(module):
 #     utils.invoke('dask-distributed', 'install')

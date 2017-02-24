@@ -11,11 +11,7 @@ def test_instance():
     assert instance.ip == "0.0.0.0"
     assert instance.port == 22
 
-    instance = Instance("1.1.1.1",
-                        uid="i-123",
-                        port=2222,
-                        username="user",
-                        keypair="~/.ssh/key")
+    instance = Instance("1.1.1.1", uid="i-123", port=2222, username="user", keypair="~/.ssh/key")
     assert instance.ip == "1.1.1.1"
     assert instance.uid == "i-123"
     assert instance.port == 2222
@@ -24,11 +20,7 @@ def test_instance():
 
 
 def test_dict_serde():
-    instance = Instance("1.1.1.1",
-                        uid="i-123",
-                        port=2222,
-                        username="user",
-                        keypair="~/.ssh/key")
+    instance = Instance("1.1.1.1", uid="i-123", port=2222, username="user", keypair="~/.ssh/key")
 
     data = instance.to_dict()
 

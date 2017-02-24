@@ -91,8 +91,7 @@ class Pepper(object):
         :rtype: dictionary
 
         '''
-        if (hasattr(data, 'get') and
-                data.get('eauth') == 'kerberos') or self.auth.get('eauth') == 'kerberos':
+        if (hasattr(data, 'get') and data.get('eauth') == 'kerberos') or self.auth.get('eauth') == 'kerberos':
             return self.req_requests(path, data)
 
         headers = {
@@ -173,11 +172,13 @@ class Pepper(object):
             headers.setdefault('X-Auth-Token', self.auth['token'])
         # Optionally toggle SSL verification
         self._ssl_verify = self.ignore_ssl_errors
-        params = {'url': self._construct_url(path),
-                  'headers': headers,
-                  'verify': self._ssl_verify,
-                  'auth': auth,
-                  'data': json.dumps(data)}
+        params = {
+            'url': self._construct_url(path),
+            'headers': headers,
+            'verify': self._ssl_verify,
+            'auth': auth,
+            'data': json.dumps(data)
+        }
         logger.debug('postdata {0}'.format(params))
         resp = requests.post(**params)
         if resp.status_code == 401:
@@ -276,11 +277,9 @@ class Pepper(object):
         authentication token or an empty dict
 
         '''
-        self.auth = self.req('/login', {
-            'username': username,
-            'password': password,
-            'eauth': eauth
-        }).get('return', [{}])[0]
+        self.auth = self.req('/login', {'username': username,
+                                        'password': password,
+                                        'eauth': eauth}).get('return', [{}])[0]
 
         return self.auth
 

@@ -54,8 +54,7 @@ class Cluster(object):
                 self._pepper = libpepper.Pepper(url, ignore_ssl_errors=True)
                 self._pepper.login('saltdev', 'saltdev', 'pam')
             except URLError:
-                raise DaskEc2Exception(
-                    "Could not connect to salt server. Try `dask-ec2 provision` and try again")
+                raise DaskEc2Exception("Could not connect to salt server. Try `dask-ec2 provision` and try again")
         return self._pepper
 
     pepper = property(get_pepper_client, None, None)
@@ -65,8 +64,7 @@ class Cluster(object):
         try:
             return self.pepper.local(target, module, args)
         except URLError:
-            raise DaskEc2Exception(
-                "Could not connect to salt server. Try `dask-ec2 provision` and try again")
+            raise DaskEc2Exception("Could not connect to salt server. Try `dask-ec2 provision` and try again")
 
     def append(self, instance):
         if isinstance(instance, Instance):

@@ -136,8 +136,7 @@ dask-ec2 destroy""".format(address).lstrip())
 
 
 @dask.command(
-    "shell",
-    short_help="Open a python (ipython if available) shell connected to the dask.distributed cluster")
+    "shell", short_help="Open a python (ipython if available) shell connected to the dask.distributed cluster")
 @click.pass_context
 @click.option("--file",
               "filepath",
@@ -150,8 +149,7 @@ def dask_shell(ctx, filepath):
     try:
         import distributed  # noqa
     except:
-        click.echo("ERROR: `distributed` package not found, not starting the python shell",
-                   err=True)
+        click.echo("ERROR: `distributed` package not found, not starting the python shell", err=True)
         sys.exit(1)
     try:
         import IPython  # noqa
@@ -170,9 +168,7 @@ def dask_shell(ctx, filepath):
     subprocess.call(cmd)
 
 
-@dask.command(
-    "ui",
-    short_help="Open a web browser pointing to the Dask UI")
+@dask.command("ui", short_help="Open a web browser pointing to the Dask UI")
 @click.pass_context
 @click.option("--file",
               "filepath",

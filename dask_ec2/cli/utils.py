@@ -30,7 +30,7 @@ class Table():
             if n <= (colsInRow - 1):
                 s += "| " + row[n]
                 s += (" " * ((colLengths[n] - len(row[n])) + 1))
-            else:    # index out of bounds
+            else:  # index out of bounds
                 s += "|" + (" " * (colLengths[n] + 2))
         s += "|"
         return s

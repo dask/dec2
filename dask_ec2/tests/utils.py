@@ -7,10 +7,8 @@ from click.testing import CliRunner
 
 from dask_ec2.cli.main import cli
 
-
 remotetest = pytest.mark.skipif(
-    'TEST_CLUSTERFILE' not in os.environ,
-    reason="Environment variable 'TEST_CLUSTERFILE' is required")
+    'TEST_CLUSTERFILE' not in os.environ, reason="Environment variable 'TEST_CLUSTERFILE' is required")
 
 
 def invoke(*args):

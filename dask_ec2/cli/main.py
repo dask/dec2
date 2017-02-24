@@ -28,8 +28,7 @@ def start():
         click.echo("Unexpected EC2 error: %s" % e, err=True)
         sys.exit(1)
     except KeyboardInterrupt:
-        click.echo(
-            "Interrupted by Ctrl-C. One or more actions could be still running in the cluster")
+        click.echo("Interrupted by Ctrl-C. One or more actions could be still running in the cluster")
         sys.exit(1)
     except Exception as e:
         click.echo(traceback.format_exc(), err=True)
@@ -173,20 +172,24 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
             click.echo("Not doing anything")
             sys.exit(0)
 
-    driver = EC2(region=region_name, vpc_id=vpc_id, subnet_id=subnet_id,
-                 default_vpc=not(vpc_id), default_subnet=not(subnet_id),
+    driver = EC2(region=region_name,
+                 vpc_id=vpc_id,
+                 subnet_id=subnet_id,
+                 default_vpc=not (vpc_id),
+                 default_subnet=not (subnet_id),
                  iaminstance_name=iaminstance_name)
     click.echo("Launching nodes")
-    instances = driver.launch(name=name,
-                              image_id=ami,
-                              instance_type=instance_type,
-                              count=count,
-                              keyname=keyname,
-                              security_group_name=security_group_name,
-                              security_group_id=security_group_id,
-                              volume_type=volume_type,
-                              volume_size=volume_size,
-                              keypair=keypair)
+    instances = driver.launch(
+        name=name,
+        image_id=ami,
+        instance_type=instance_type,
+        count=count,
+        keyname=keyname,
+        security_group_name=security_group_name,
+        security_group_id=security_group_id,
+        volume_type=volume_type,
+        volume_size=volume_size,
+        keypair=keypair)
 
     cluster = Cluster.from_boto3_instances(region_name, instances)
     cluster.set_username(username)
@@ -225,9 +228,7 @@ def destroy(ctx, filepath, yes):
 
     question = 'Are you sure you want to destroy the cluster?'
     if yes or click.confirm(question):
-        driver = EC2(region=cluster.region_name,
-                     default_vpc=False,
-                     default_subnet=False)
+        driver = EC2(region=cluster.region_name, default_vpc=False, default_subnet=False)
         # needed if there is no default vpc or subnet
         ids = [i.uid for i in cluster.instances]
         click.echo("Terminating instances")
@@ -325,8 +326,7 @@ def ssh(ctx, node, filepath):
 def provision(ctx, filepath, ssh_check, master, minions, upload, anaconda_,
               dask, notebook, nprocs, source):
     import six
-    from ..salt import (install_salt_master, install_salt_minion,
-                        upload_formulas, upload_pillar)
+    from ..salt import (install_salt_master, install_salt_minion, upload_formulas, upload_pillar)
 
     cluster = Cluster.from_filepath(filepath)
     if ssh_check:
@@ -348,22 +348,13 @@ def provision(ctx, filepath, ssh_check, master, minions, upload, anaconda_,
         click.echo("Uploading salt formulas")
         upload_formulas(cluster)
         click.echo("Uploading conda and cluster settings")
-        upload_pillar(cluster, "conda.sls", {
-            "conda": {
-                "pyversion": 2 if six.PY2 else 3
-            }
-        })
-        upload_pillar(cluster, "cluster.sls", {
-            "cluster": {
-                "username": cluster.instances[0].username
-            }
-        })
+        upload_pillar(cluster, "conda.sls", {"conda": {"pyversion": 2 if six.PY2 else 3}})
+        upload_pillar(cluster, "cluster.sls", {"cluster": {"username": cluster.instances[0].username}})
     if anaconda_:
         ctx.invoke(anaconda, filepath=filepath)
     if dask:
         from .daskd import dask_install
-        ctx.invoke(dask_install, filepath=filepath, nprocs=nprocs,
-                   source=source)
+        ctx.invoke(dask_install, filepath=filepath, nprocs=nprocs, source=source)
     if notebook:
         from .notebook import notebook_install
         ctx.invoke(notebook_install, filepath=filepath)

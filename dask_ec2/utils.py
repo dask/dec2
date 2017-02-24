@@ -13,6 +13,7 @@ def retry(retries=10, wait=5, catch=None):
     catch = catch or (Exception,)
 
     def real_retry(function):
+
         def wrapper(*args, **kwargs):
             last_exception = None
             for attempt in range(1, retries + 1):
@@ -21,8 +22,7 @@ def retry(retries=10, wait=5, catch=None):
                     return ret
                 except catch as e:
                     last_exception = e
-                    logger.debug("Attempt %i/%i of function '%s' failed", attempt, retries,
-                                 function.__name__)
+                    logger.debug("Attempt %i/%i of function '%s' failed", attempt, retries, function.__name__)
                     time.sleep(wait)
                 except Exception as e:
                     raise e

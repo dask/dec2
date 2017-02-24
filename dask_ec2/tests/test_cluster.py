@@ -67,10 +67,7 @@ def test_dict_serde():
     keypair = "~/.ssh/key"
     n = 5
     for i in range(n):
-        instance = Instance(uid="%i" % i,
-                            ip="{0}.{0}.{0}.{0}".format(i),
-                            username=username,
-                            keypair=keypair)
+        instance = Instance(uid="%i" % i, ip="{0}.{0}.{0}.{0}".format(i), username=username, keypair=keypair)
         cluster.append(instance)
 
     data = cluster.to_dict()
@@ -95,10 +92,7 @@ def test_from_filepath(request, tmpdir):
     keypair = "~/.ssh/key"
     n = 5
     for i in range(n):
-        instance = Instance(uid="%i" % i,
-                            ip="{0}.{0}.{0}.{0}".format(i),
-                            username=username,
-                            keypair=keypair)
+        instance = Instance(uid="%i" % i, ip="{0}.{0}.{0}.{0}".format(i), username=username, keypair=keypair)
         cluster.append(instance)
 
     cluster.to_file(fpath)

@@ -150,36 +150,34 @@ class EC2(object):
         logger.debug("Setting up default values for the '%s' security group", DEFAULT_SG_GROUP_NAME)
         security_group = self.get_security_groups(DEFAULT_SG_GROUP_NAME)[0]
 
-        IpPermissions = [
-            {
-                "IpProtocol": "tcp",
-                "FromPort": 0,
-                "ToPort": 65535,
-                "IpRanges": [
-                    {
-                        "CidrIp": "0.0.0.0/0"
-                    },
-                ],
-            }, {
-                "IpProtocol": "udp",
-                "FromPort": 0,
-                "ToPort": 65535,
-                "IpRanges": [
-                    {
-                        "CidrIp": "0.0.0.0/0"
-                    },
-                ],
-            }, {
-                "IpProtocol": "icmp",
-                "FromPort": -1,
-                "ToPort": -1,
-                "IpRanges": [
-                    {
-                        "CidrIp": "0.0.0.0/0"
-                    },
-                ],
-            }
-        ]
+        IpPermissions = [{
+            "IpProtocol": "tcp",
+            "FromPort": 0,
+            "ToPort": 65535,
+            "IpRanges": [
+                {
+                    "CidrIp": "0.0.0.0/0"
+                },
+            ],
+        }, {
+            "IpProtocol": "udp",
+            "FromPort": 0,
+            "ToPort": 65535,
+            "IpRanges": [
+                {
+                    "CidrIp": "0.0.0.0/0"
+                },
+            ],
+        }, {
+            "IpProtocol": "icmp",
+            "FromPort": -1,
+            "ToPort": -1,
+            "IpRanges": [
+                {
+                    "CidrIp": "0.0.0.0/0"
+                },
+            ],
+        }]
 
         try:
             security_group.authorize_egress(IpPermissions=IpPermissions)
