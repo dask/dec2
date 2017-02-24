@@ -61,26 +61,10 @@ def cli(ctx):
               show_default=True,
               required=False,
               help="AWS region")
-@click.option("--vpc-id",
-              default=None,
-              show_default=True,
-              required=False,
-              help="EC2 VPC ID")
-@click.option("--subnet-id",
-              default=None,
-              show_default=True,
-              required=False,
-              help="EC2 Subnet ID on the VPC")
-@click.option("--iaminstance-name",
-              default=None,
-              show_default=True,
-              required=False,
-              help="IAM Instance Name")
-@click.option("--ami",
-              default="ami-d05e75b8",
-              show_default=True,
-              required=False,
-              help="EC2 AMI")
+@click.option("--vpc-id", default=None, show_default=True, required=False, help="EC2 VPC ID")
+@click.option("--subnet-id", default=None, show_default=True, required=False, help="EC2 Subnet ID on the VPC")
+@click.option("--iaminstance-name", default=None, show_default=True, required=False, help="IAM Instance Name")
+@click.option("--ami", default="ami-d05e75b8", show_default=True, required=False, help="EC2 AMI")
 @click.option("--username",
               default="ubuntu",
               show_default=True,
@@ -92,11 +76,7 @@ def cli(ctx):
               show_default=True,
               required=False,
               help="EC2 Instance Type")
-@click.option("--count",
-              default=4,
-              show_default=True,
-              required=False,
-              help="Number of nodes")
+@click.option("--count", default=4, show_default=True, required=False, help="Number of nodes")
 @click.option("--security-group",
               "security_group_name",
               default="dask-ec2-default",
@@ -179,17 +159,16 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
                  default_subnet=not (subnet_id),
                  iaminstance_name=iaminstance_name)
     click.echo("Launching nodes")
-    instances = driver.launch(
-        name=name,
-        image_id=ami,
-        instance_type=instance_type,
-        count=count,
-        keyname=keyname,
-        security_group_name=security_group_name,
-        security_group_id=security_group_id,
-        volume_type=volume_type,
-        volume_size=volume_size,
-        keypair=keypair)
+    instances = driver.launch(name=name,
+                              image_id=ami,
+                              instance_type=instance_type,
+                              count=count,
+                              keyname=keyname,
+                              security_group_name=security_group_name,
+                              security_group_id=security_group_id,
+                              volume_type=volume_type,
+                              volume_size=volume_size,
+                              keypair=keypair)
 
     cluster = Cluster.from_boto3_instances(region_name, instances)
     cluster.set_username(username)
@@ -211,16 +190,8 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
               show_default=True,
               required=False,
               help="Filepath to the instances metadata")
-@click.option('--yes',
-              '-y',
-              is_flag=True,
-              default=False,
-              help='Answers yes to questions')
-@click.option("--region-name",
-              default="us-east-1",
-              show_default=True,
-              required=False,
-              help="AWS region")
+@click.option('--yes', '-y', is_flag=True, default=False, help='Answers yes to questions')
+@click.option("--region-name", default="us-east-1", show_default=True, required=False, help="AWS region")
 def destroy(ctx, filepath, yes):
     import os
     from ..ec2 import EC2
@@ -323,10 +294,9 @@ def ssh(ctx, node, filepath):
               default=False,
               show_default=True,
               help="Install Dask/Distributed from git master")
-def provision(ctx, filepath, ssh_check, master, minions, upload, anaconda_,
-              dask, notebook, nprocs, source):
+def provision(ctx, filepath, ssh_check, master, minions, upload, anaconda_, dask, notebook, nprocs, source):
     import six
-    from ..salt import (install_salt_master, install_salt_minion, upload_formulas, upload_pillar)
+    from ..salt import install_salt_master, install_salt_minion, upload_formulas, upload_pillar
 
     cluster = Cluster.from_filepath(filepath)
     if ssh_check:
