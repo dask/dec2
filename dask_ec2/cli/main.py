@@ -74,7 +74,9 @@ def cli(ctx):
               show_default=True,
               required=False,
               help="EC2 Instance Type")
-@click.option("--count", default=4, show_default=True, required=False, help="Number of nodes")
+@click.option("--count", default=4, show_default=True, required=False, help="Number of nodes (at least one recommended for scheduler)")
+@click.option("--spot-count", default=0, show_default=True, required=False, help="Number of spot instance nodes")
+@click.option("--spot-price", default="0.10", show_default=True, required=False, help="Maximum spot price for the spot instances")
 @click.option("--security-group",
               "security_group_name",
               default="dask-ec2-default",
@@ -138,7 +140,7 @@ def cli(ctx):
               show_default=True,
               help="Install Dask/Distributed from git master")
 def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
-       iaminstance_name, ami, username, instance_type, count,
+       iaminstance_name, ami, username, instance_type, count, spot_count, spot_price,
        security_group_name, security_group_id, volume_type, volume_size, filepath, _provision, anaconda_,
        dask, notebook, nprocs, source):
     import os
@@ -158,6 +160,8 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
                               image_id=ami,
                               instance_type=instance_type,
                               count=count,
+                              spot_count = spot_count,
+                              spot_price = spot_price,
                               keyname=keyname,
                               security_group_name=security_group_name,
                               security_group_id=security_group_id,
