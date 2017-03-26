@@ -16,7 +16,9 @@ DEFAULT_SG_GROUP_NAME = "dask-ec2-default"
 class EC2(object):
 
     def __init__(self, region, vpc_id=None, subnet_id=None, default_vpc=True,
-                 default_subnet=True, iaminstance_name=None, test=True):
+                 default_subnet=True, iaminstance_name=None,
+                 test=True):
+
         self.ec2 = boto3.resource("ec2", region_name=region)
         self.client = boto3.client("ec2", region_name=region)
 
