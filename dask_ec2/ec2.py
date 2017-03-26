@@ -271,15 +271,11 @@ class EC2(object):
             if name:
                 logger.debug("Tagging instance '%s'", instance.id)
                 tags_ = [{"Key": "Name", "Value": "{0}-{1}".format(name, i)}]
-                for tag_pair in tags:
-                    parts = tag_pair.split(":")
-                    if len(parts) == 2:
-                        key = parts[0]
-                        value = parts[1]
-                    else:
-                        key = "Tag"
-                        value = tag_pair
-                    tags_.append({"Key": key, "Value": value})
+
+                # assumed to formatted correctly in ec2.py
+                for t in tags:
+                    k, v = t.split(":")
+                    tags_.append({"Key": k, "Value": v})
                 self.ec2.create_tags(Resources=[instance.id], Tags=tags_)
 
         return instances

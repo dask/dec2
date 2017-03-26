@@ -56,6 +56,10 @@ def cli(ctx):
               required=False,
               default="dask-ec2-cluster",
               help="Tag name on EC2")
+@click.option("--tags",
+              required=False,
+              default="dask-ec2-cluster",
+              help="Additional EC2 tags.  Comma separated K:V pairs: K1:V1,K2:V2")
 @click.option("--region-name",
               default="us-east-1",
               show_default=True,
@@ -142,9 +146,18 @@ def cli(ctx):
 def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
        iaminstance_name, ami, username, instance_type, count,
        security_group_name, security_group_id, volume_type, volume_size,
-       filepath, _provision, anaconda_, dask, notebook, nprocs, source):
+       filepath, _provision, anaconda_, dask, notebook, nprocs, source, tags):
     import os
     from ..ec2 import EC2
+
+    tags = tags.split(',')
+
+    # check tag formatting
+    for t in tags:
+        kv = t.split(':')
+        if len(kv) != 2:
+            click.echo("Invalid Key Value Pair: {}.  Must be of the form K:V".format(t))
+            sys.exit(1)
 
     if os.path.exists(filepath):
         msg = "A file named {} already exists, proceding will overwrite this file. Continue?".format(filepath)
@@ -168,7 +181,8 @@ def up(ctx, name, keyname, keypair, region_name, vpc_id, subnet_id,
                               security_group_id=security_group_id,
                               volume_type=volume_type,
                               volume_size=volume_size,
-                              keypair=keypair)
+                              keypair=keypair,
+                              tags=tags)
 
     cluster = Cluster.from_boto3_instances(region_name, instances)
     cluster.set_username(username)
