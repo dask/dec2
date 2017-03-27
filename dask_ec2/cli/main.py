@@ -58,7 +58,7 @@ def cli(ctx):
               help="Tag name on EC2")
 @click.option("--tags",
               required=False,
-              default="dask-ec2-cluster",
+              default=None,
               help="Additional EC2 tags.  Comma separated K:V pairs: K1:V1,K2:V2")
 @click.option("--region-name",
               default="us-east-1",
