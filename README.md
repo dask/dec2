@@ -39,7 +39,7 @@ Options:
                                 [required]
   --name TEXT                   Tag name on EC2
   --region-name TEXT            AWS region  [default: us-east-1]
-  --ami TEXT                    EC2 AMI  [default: ami-d05e75b8]
+  --ami TEXT                    EC2 AMI  [default: ami-a8d2d7ce]
   --username TEXT               User to SSH to the AMI  [default: ubuntu]
   --type TEXT                   EC2 Instance Type  [default: m3.2xlarge]
   --count INTEGER               Number of nodes  [default: 4]

@@ -68,7 +68,7 @@ def cli(ctx):
 @click.option("--vpc-id", default=None, show_default=True, required=False, help="EC2 VPC ID")
 @click.option("--subnet-id", default=None, show_default=True, required=False, help="EC2 Subnet ID on the VPC")
 @click.option("--iaminstance-name", default=None, show_default=True, required=False, help="IAM Instance Name")
-@click.option("--ami", default="ami-d05e75b8", show_default=True, required=False, help="EC2 AMI")
+@click.option("--ami", default="ami-a8d2d7ce", show_default=True, required=False, help="EC2 AMI")
 @click.option("--username",
               default="ubuntu",
               show_default=True,
