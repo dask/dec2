@@ -187,7 +187,7 @@ def install_salt_master(cluster):
 
     @retry(retries=3, wait=0)
     def __install_pyopensll():
-        cmd = "pip install PyOpenSSL==16.2.0"
+        cmd = "apt-get install libssl-dev libffi-dev python-dev -y; pip install PyOpenSSL==16.2.0"
         ret = master.exec_command(cmd, sudo=True)
         if ret["exit_code"] != 0:
             raise Exception(ret["stderr"])
