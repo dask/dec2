@@ -120,7 +120,7 @@ def test_check_ssh(cluster):
 def test_from_boto3(driver):
     from dask_ec2.ec2 import DEFAULT_SG_GROUP_NAME
     name = "test_launch"
-    ami = "ami-d05e75b8"
+    ami = "ami-a8d2d7ce"
     instance_type = "m3.2xlarge"
     region = "us-east-1"
     count = 5

@@ -9,7 +9,7 @@ from dask_ec2.exceptions import DaskEc2Exception
 
 # Some default values
 name = "test_launch"
-ami = "ami-d05e75b8"
+ami = "ami-a8d2d7ce"
 instance_type = "m3.2xlarge"
 count = 3
 keyname = "mykey"
